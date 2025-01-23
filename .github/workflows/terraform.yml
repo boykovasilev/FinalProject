@@ -43,3 +43,8 @@ jobs:
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main'
       run: terraform apply -auto-approve -input=false
+
+    - name: Shell Script that runs Ansible Playbook
+      run: ./ssh_vm.sh 
+      env:
+        CF_TOKEN: ${{ secrets.CF_TOKEN }}

@@ -40,13 +40,13 @@
       command: "{{item}}"
       become_user: boyko
       with_items:
-        - sh /home/boyko/ansible/cloudflare/creatednsrecord.sh 4d301002502cbcbd8a7305dd725fe85a {{ hostvars[inventory_hostname].inventory_hostname }} *.boyko.resolvedevops.net
-        - sh /home/boyko/ansible/cloudflare/creatednsrecord.sh 517a23b8c79e0d33f5eed19255200a9a {{ hostvars[inventory_hostname].inventory_hostname }} boyko.resolvedevops.net     
+        - sh /home/boyko/ansible/cloudflare/creatednsrecord.sh {{ lookup('ansible.builtin.env', 'CF_TOKEN') }} {{ lookup('ansible.builtin.env', 'IP') }} *.devopstrain.eu
+        - sh /home/boyko/ansible/cloudflare/creatednsrecord.sh {{ lookup('ansible.builtin.env', 'CF_TOKEN') }} {{ lookup('ansible.builtin.env', 'IP') }} devopstrain.eu     
     - name: Pause for 2 minutes to wait for dns propagation
       ansible.builtin.pause:
         minutes: 2
     - name: Generate certificates 
-      command: certbot --noninteractive --agree-tos --cert-name dev.boyko.resolvedevops.net -d dev.boyko.resolvedevops.net --register-unsafely-without-email --nginx 
+      command: certbot --noninteractive --agree-tos --cert-name devopstrain.eu -d devopstrain.eu --register-unsafely-without-email --nginx 
     - name: generate SSH key
       become_user: boyko
       shell:
@@ -62,93 +62,3 @@
       shell:
         cmd: rm -rf dev && ssh-keyscan github.com >> ~/.ssh/known_hosts && git clone -b dev git@github.com:bobn3n/testrepo.git dev
         chdir: /home/boyko/
-    # - name: ensure jq is at the latest version
-    #   apt: name=jq state=latest
-    # - name: copying runner files 
-    #   copy:
-    #     src: ./actionrunner
-    #     dest: /home/boyko
-    #     owner: boyko
-    #     group: boyko        
-    # - name: Execute the script createrunner.sh
-    #   command: sh /home/boyko/actionrunner/createrunner.sh
-    #   become_user: boyko
-
-    # - name: download GPG key
-    #   apt_key:
-    #     url: https://download.docker.com/linux/ubuntu/gpg
-    #     state: present              
-    # - name: register repository docker
-    #   apt_repository:
-    #     repo: deb https://download.docker.com/linux/ubuntu focal stable
-    #     state: present      
-    # - name: install docker
-    #   apt:
-    #     name:
-    #       - docker-ce
-    #       - docker-ce-cli
-    #       - containerd.io
-    #     state: latest
-    #     update_cache: yes
-    # - name: adding users to group docker
-    #   user:
-    #     name: boyko
-    #     groups: docker
-    #     append: yes
-    # - name: Install docker-compose
-    #   get_url:
-    #     url : https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64
-    #     dest: /usr/local/bin/docker-compose
-    #     mode: '755'                
-    # - name: start the docker service
-    #   service:
-    #     name: docker
-    #     state: started
-    #     enabled: yes
-    # - name: copying dns files
-    #   copy:
-    #     src: ./cloudflare
-    #     dest: /home/boyko
-    #     owner: boyko
-    #     group: boyko        
-    # - name: update dns records
-    #   command: "{{item}}"
-    #   become_user: boyko
-    #   with_items:
-    #     - sh /home/boyko/cloudflare/creatednsrecord.sh 4d301002502cbcbd8a7305dd725fe85a {{ hostvars[inventory_hostname].inventory_hostname }} *.boyko.resolvedevops.net
-    #     - sh /home/boyko/cloudflare/creatednsrecord.sh 517a23b8c79e0d33f5eed19255200a9a {{ hostvars[inventory_hostname].inventory_hostname }} boyko.resolvedevops.net     
-    # - name: Generate certificates 
-    #   command: certbot --noninteractive --agree-tos --cert-name dev.boyko.resolvedevops.net -d dev.boyko.resolvedevops.net --register-unsafely-without-email --nginx 
-    # - name: copying runner files 
-    #   copy:
-    #     src: ./createkey
-    #     dest: /home/boyko
-    #     owner: boyko
-    #     group: boyko
-    # - name: generate SSH key
-    #   become_user: boyko
-    #   shell:
-    #     cmd: printf '\ny\n\n\n' | ssh-keygen -t rsa -P ""
-    #     chdir: /home/boyko/               
-    # - name: check and create deploy key for repo
-    #   command: "{{item}}"
-    #   become_user: boyko
-    #   with_items:
-    #     - sh /home/boyko/createkey/listdeploykey.sh 
-    #     - sh /home/boyko/createkey/deletedev.sh
-    #     - sh /home/boyko/createkey/createdeploykey.sh
-    # - name: Clone a github repository
-    #   become_user: boyko
-    #   shell:
-    #     cmd: rm -rf dev && ssh-keyscan github.com >> ~/.ssh/known_hosts && git clone -b dev git@github.com:bobn3n/testrepo.git dev
-    #     chdir: /home/boyko/
-    # - name: copy Trigger worflow job file
-    #   copy:
-    #     src: ./workflowtrigger
-    #     dest: /home/boyko/
-    #     owner: boyko
-    #     group: boyko
-    # - name: Trigger worflow job file  
-    #   become_user: boyko 
-    #   command: sh /home/boyko/workflowtrigger/runworkflow.sh
-               
