@@ -23,8 +23,8 @@ jobs:
           az account show
           # You can write your Azure CLI inline scripts here.
 
-          - name: Checkout the repository to the runner
-          uses: actions/checkout@v2
+    - name: Checkout the repository to the runner
+      uses: actions/checkout@v2
     
     - name: Setup Terraform with specified version on the runner
       uses: hashicorp/setup-terraform@v2
