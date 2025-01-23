@@ -5,7 +5,6 @@ terraform {
       version = "4.16.0"
     }
     azapi = {
-      alias = "alias1"
       source  = "azure/azapi"
       version = "~>1.5"
       use_oidc = true
