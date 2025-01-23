@@ -24,6 +24,16 @@ resource "azapi_resource" "ssh_public_key" {
   name      = random_pet.ssh_key_name.id
   location  = azurerm_resource_group.rg.location
   parent_id = azurerm_resource_group.rg.id
+  
+    identity {
+    type = "SystemAssigned"
+  }
+
+  body = jsonencode({
+    properties = {
+      publicKey = file("~/.ssh/id_rsa.pub")
+    }
+  })
 }
 
 resource "azurerm_key_vault" "site_secrets" {
