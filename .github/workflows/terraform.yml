@@ -3,6 +3,7 @@ on: workflow_dispatch
 
 permissions:
   id-token: write # Require write permission to Fetch an OIDC token.
+  contents: read
       
 jobs: 
   test:
