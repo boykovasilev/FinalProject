@@ -18,9 +18,12 @@ echo "$PRIVATE_KEY" > "$TEMP_KEY_FILE"
 chmod 600 "$TEMP_KEY_FILE"
 
 # SSH into the VM
+mkdir -p ~/.ssh/ && touch ~/.ssh/known_hosts
 ssh-keyscan $VM_IP_ADDRESS >> ~/.ssh/known_hosts
-scp -i "$TEMP_KEY_FILE" -r ./ansible "$VM_USERNAME@$VM_IP_ADDRESS":~/ansible  
-ssh -i "$TEMP_KEY_FILE" "$VM_USERNAME@$VM_IP_ADDRESS" "sudo apt update;sudo apt install -y ansible; CF_TOKEN=$CF_TOKEN IP=$VM_IP_ADDRESS ansible-playbook ~/ansible/ansible-playbook.yml"
+eval $(ssh-agent)
+ssh-add - <<< "$PRIVATE_KEY"            
+scp -i "$TEMP_KEY_FILE" -o UserKnownHostsFile=~/.ssh/known_hosts -r ./ansible "$VM_USERNAME@$VM_IP_ADDRESS":~/ansible  
+ssh -i "$TEMP_KEY_FILE" -o UserKnownHostsFile=~/.ssh/known_hosts "$VM_USERNAME@$VM_IP_ADDRESS" "sudo apt update;sudo apt install -y ansible; CF_TOKEN=$CF_TOKEN IP=$VM_IP_ADDRESS ansible-playbook ~/ansible/ansible-playbook.yml"
 
 # # Delete the temporary key file
 # rm -f "$TEMP_KEY_FILE"
