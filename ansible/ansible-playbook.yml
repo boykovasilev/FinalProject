@@ -65,5 +65,5 @@
     - name: Move files to nginx serving location
       become_user: boyko
       shell:
-        cmd: sudo cp -r /home/boyko/repo/siteFiles /var/www/html
+        cmd: sudo cp -r /home/boyko/repo/siteFiles/* /var/www/html
         chdir: /home/boyko/
