@@ -51,36 +51,36 @@ jobs:
         ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
         ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-    - name: list directory
-      run: ls -la && cat terraform.tfstate
+    # - name: list directory
+    #   run: ls -la && cat terraform.tfstate
       
-    - name: Get key vault name
-      run: terraform output -raw key_vault_name
+    # - name: Get key vault name
+    #   run: terraform output -raw key_vault_name
       
-    - name: Get key vault name
-      run: echo "KEY_VAULT_NAME=$(terraform output -raw key_vault_name)" >> $GITHUB_ENV
+    # - name: Get key vault name
+    #   run: echo "KEY_VAULT_NAME=$(terraform output -raw key_vault_name)" >> $GITHUB_ENV
 
-    - name: Get private key
-      run: echo "PRIVATE_KEY=$(az keyvault secret show --name ssh-private-key --vault-name "$KEY_VAULT_NAME" --query value -o tsv)" >> $GITHUB_ENV
+    # - name: Get private key
+    #   run: echo "PRIVATE_KEY=$(az keyvault secret show --name ssh-private-key --vault-name "$KEY_VAULT_NAME" --query value -o tsv)" >> $GITHUB_ENV
 
-    - name: Get username
-      run: echo "VM_USERNAME=$(az keyvault secret show --name vm-username --vault-name "$KEY_VAULT_NAME" --query value -o tsv)" >> $GITHUB_ENV
+    # - name: Get username
+    #   run: echo "VM_USERNAME=$(az keyvault secret show --name vm-username --vault-name "$KEY_VAULT_NAME" --query value -o tsv)" >> $GITHUB_ENV
 
-    - name: Get IP address
-      run: echo "VM_IP_ADDRESS=$(az keyvault secret show --name vm-ip-address --vault-name "$KEY_VAULT_NAME" --query value -o tsv)" >> $GITHUB_ENV
+    # - name: Get IP address
+    #   run: echo "VM_IP_ADDRESS=$(az keyvault secret show --name vm-ip-address --vault-name "$KEY_VAULT_NAME" --query value -o tsv)" >> $GITHUB_ENV
     
-    - name: Prepare key
-      run: echo "$PRIVATE_KEY" > private_key.pem && chmod 600 private_key.pem
+    # - name: Prepare key
+    #   run: echo "$PRIVATE_KEY" > private_key.pem && chmod 600 private_key.pem
 
-    - name: Transfer files to machine
-      run: scp -i private_key.pem -r ./ansible "$VM_USERNAME@$VM_IP_ADDRESS":~/ansible  
+    # - name: Transfer files to machine
+    #   run: scp -i private_key.pem -r ./ansible "$VM_USERNAME@$VM_IP_ADDRESS":~/ansible  
 
-    - name: Run ansible on machine 
-      run: ssh -i private_key.pem "$VM_USERNAME@$VM_IP_ADDRESS" "sudo apt update;sudo apt install ansible; CF_TOKEN=$CF_TOKEN IP=$VM_IP_ADDRESS ansible-playbook ~/ansible/ansible-playbook.yml"
-      env:
-        CF_TOKEN: ${{ secrets.CF_TOKEN }}
-        
-    # - name: Shell Script that runs Ansible Playbook
-    #   run: chmod +x ssh_vm.sh && ./ssh_vm.sh 
+    # - name: Run ansible on machine 
+    #   run: ssh -i private_key.pem "$VM_USERNAME@$VM_IP_ADDRESS" "sudo apt update;sudo apt install ansible; CF_TOKEN=$CF_TOKEN IP=$VM_IP_ADDRESS ansible-playbook ~/ansible/ansible-playbook.yml"
     #   env:
     #     CF_TOKEN: ${{ secrets.CF_TOKEN }}
+        
+    - name: Shell Script that runs Ansible Playbook
+      run: chmod +x ssh_vm.sh && ./ssh_vm.sh 
+      env:
+        CF_TOKEN: ${{ secrets.CF_TOKEN }}
