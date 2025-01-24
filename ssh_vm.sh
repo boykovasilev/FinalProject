@@ -27,4 +27,4 @@ ssh-add - <<< "$PRIVATE_KEY"
 scp -i "$TEMP_KEY_FILE" -o UserKnownHostsFile=~/.ssh/known_hosts -r ./ansible "$VM_USERNAME@$VM_IP_ADDRESS":~/ansible 
 
 # Execute Ansible Files Locally
-ssh -i "$TEMP_KEY_FILE" -o UserKnownHostsFile=~/.ssh/known_hosts "$VM_USERNAME@$VM_IP_ADDRESS" "sudo apt update;sudo apt install -y ansible; CF_TOKEN=$CF_TOKEN IP=$VM_IP_ADDRESS ansible-playbook ~/ansible/ansible-playbook.yml"
+ssh -i "$TEMP_KEY_FILE" -o UserKnownHostsFile=~/.ssh/known_hosts "$VM_USERNAME@$VM_IP_ADDRESS" "sudo apt update;sudo apt install -y ansible; GITHUB_TOKEN=$GITHUB_TOKEN CF_TOKEN=$CF_TOKEN IP=$VM_IP_ADDRESS ansible-playbook ~/ansible/ansible-playbook.yml"
