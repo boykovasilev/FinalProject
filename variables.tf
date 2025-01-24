@@ -17,17 +17,17 @@ variable "username" {
 }
 
 # Trying to fix thge deployment issue:
-variable "client_id" {
-  type        = string
-  description = "The client ID of the Azure AD application."
-  default = "8ec181e6-4a2c-4511-92ce-fbd7ac04237e"
-}
+# variable "client_id" {
+#   type        = string
+#   description = "The client ID of the Azure AD application."
+#   default = "8ec181e6-4a2c-4511-92ce-fbd7ac04237e"
+# }
 
-variable "tenant_id" {
-  type        = string
-  description = "The tenant ID of the Azure AD application."
-  default = "75be9c20-d181-496f-84b7-e2e3c573e467"
-}
+# variable "tenant_id" {
+#   type        = string
+#   description = "The tenant ID of the Azure AD application."
+#   default = "75be9c20-d181-496f-84b7-e2e3c573e467"
+# }
 
 variable "subscription_id" {
   type        = string
