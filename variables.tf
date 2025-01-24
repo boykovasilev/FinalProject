@@ -15,3 +15,24 @@ variable "username" {
   description = "The username for the local account that will be created on the new VM."
   default     = "boyko"
 }
+
+# Trying to fix thge deployment issue:
+variable "client_id" {
+  type        = string
+  description = "The client ID of the Azure AD application."
+}
+
+variable "client_secret" {
+  type        = string
+  description = "The client secret of the Azure AD application."
+}
+
+variable "tenant_id" {
+  type        = string
+  description = "The tenant ID of the Azure AD application."
+}
+
+variable "subscription_id" {
+  type        = string
+  description = "The subscription ID for the Azure account."
+}

@@ -18,5 +18,13 @@ terraform {
 
 provider "azurerm" {
   features {}
-  subscription_id = "affa400c-9132-43d6-b147-841e4a5b033f"
+  subscription_id = var.subscription_id
+}
+
+# Trying to fix the deployment issue: 
+provider "azapi" {
+  client_id       = var.client_id
+  client_secret   = var.client_secret
+  tenant_id       = var.tenant_id
+  subscription_id = var.subscription_id
 }
