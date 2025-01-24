@@ -55,4 +55,4 @@ jobs:
       run: chmod +x ssh_vm.sh && ./ssh_vm.sh 
       env:
         CF_TOKEN: ${{ secrets.CF_TOKEN }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.DEPLOY_KEY_TOKEN }}
