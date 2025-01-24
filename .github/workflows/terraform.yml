@@ -50,6 +50,12 @@ jobs:
         ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
         ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+    - name: list directory
+      run: ls -la
+      
+    - name: Get key vault name
+      run: terraform output -raw key_vault_name
+      
     - name: Get key vault name
       run: echo "KEY_VAULT_NAME=$(terraform output -raw key_vault_name)" >> $GITHUB_ENV
 
