@@ -22,8 +22,8 @@ FinalProject is a Terraform project that automates the deployment of infrastruct
 ## Prerequisites
 - [Terraform](https://www.terraform.io/downloads.html) installed
 - [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) installed
-- Domain managed on Cloudflare (https://www.cloudflare.com/)
-- Azure subscription
+- [Cloudflare](https://www.cloudflare.com/) managed domain
+- [Azure](https://azure.microsoft.com/en-us/) subscription
 
 ## Installation
 1. Clone the repository:
