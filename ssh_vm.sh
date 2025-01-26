@@ -17,9 +17,14 @@ TEMP_KEY_FILE=$(mktemp)
 echo "$PRIVATE_KEY" > "$TEMP_KEY_FILE"
 chmod 600 "$TEMP_KEY_FILE"
 
-# SSH into the VM
-scp -i "$TEMP_KEY_FILE" -r ./ansible "$VM_USERNAME@$VM_IP_ADDRESS":~/ansible  
-ssh -i "$TEMP_KEY_FILE" "$VM_USERNAME@$VM_IP_ADDRESS" "sudo apt update;sudo apt install ansible; CF_TOKEN=$CF_TOKEN IP=$VM_IP_ADDRESS ansible-playbook ~/ansible/ansible-playbook.yml"
+# Prepare key requirements for SSH
+mkdir -p ~/.ssh/ && touch ~/.ssh/known_hosts
+ssh-keyscan $VM_IP_ADDRESS >> ~/.ssh/known_hosts
+eval $(ssh-agent)
+ssh-add - <<< "$PRIVATE_KEY"     
 
-# # Delete the temporary key file
-# rm -f "$TEMP_KEY_FILE"
+# Transfer Ansible Files
+scp -i "$TEMP_KEY_FILE" -o UserKnownHostsFile=~/.ssh/known_hosts -r ./ansible "$VM_USERNAME@$VM_IP_ADDRESS":~/ansible 
+
+# Execute Ansible Files Locally
+ssh -i "$TEMP_KEY_FILE" -o UserKnownHostsFile=~/.ssh/known_hosts "$VM_USERNAME@$VM_IP_ADDRESS" "sudo apt update;sudo apt install -y ansible; GITHUB_TOKEN=$GITHUB_TOKEN CF_TOKEN=$CF_TOKEN IP=$VM_IP_ADDRESS ansible-playbook ~/ansible/ansible-playbook.yml"

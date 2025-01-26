@@ -2,4 +2,4 @@ curl --request GET \
   --url https://api.cloudflare.com/client/v4/zones/ac59335f2c5f49f5d6ad8307c3c2dd32/dns_records \
   --header 'Content-Type: application/json' \
   --header 'X-Auth-Email: boyko.i.vasiev@gmail.com' \
-  --header 'X-Auth-Key: '$1'' \
+  --header 'Authorization: Bearer '$1'' \

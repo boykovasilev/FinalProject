@@ -56,9 +56,14 @@
       command: "{{item}}"
       become_user: boyko
       with_items:
-        - sh /home/boyko/ansible/github/createdeploykey.sh
+        - sh /home/boyko/ansible/github/createdeploykey.sh {{ lookup('ansible.builtin.env', 'GITHUB_TOKEN') }}
     - name: Clone a github repository
       become_user: boyko
       shell:
-        cmd: rm -rf dev && ssh-keyscan github.com >> ~/.ssh/known_hosts && git clone -b dev git@github.com:bobn3n/testrepo.git dev
+        cmd: rm -rf repo && ssh-keyscan github.com >> ~/.ssh/known_hosts && git clone git@github.com:boykovasilev/FinalProject.git repo
+        chdir: /home/boyko/
+    - name: Move files to nginx serving location
+      become_user: boyko
+      shell:
+        cmd: sudo cp -r /home/boyko/repo/siteFiles/* /var/www/html
         chdir: /home/boyko/
