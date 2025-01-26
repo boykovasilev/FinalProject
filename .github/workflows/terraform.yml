@@ -6,7 +6,7 @@ permissions:
   contents: read
       
 jobs: 
-  test:
+  deploy_site:
     runs-on: ubuntu-latest
     steps:
     - name: Azure CLI Login
@@ -21,8 +21,32 @@ jobs:
       with:
         azcliversion: latest
         inlineScript: |
-          az account show
-          # You can write your Azure CLI inline scripts here.
+          RESOURCE_GROUP_NAME=rg_tfstate
+          STORAGE_ACCOUNT_NAME=tfstate$RANDOM
+          CONTAINER_NAME=tfstate
+
+          az group create \
+          --name $RESOURCE_GROUP_NAME \
+          --location westeurope
+
+          az storage account create \
+          --resource-group $RESOURCE_GROUP_NAME \
+          --name $STORAGE_ACCOUNT_NAME \
+          --sku Standard_LRS \
+          --encryption-services blob
+
+          az storage container create \
+          --name $CONTAINER_NAME \
+          --account-name $STORAGE_ACCOUNT_NAME
+
+          ACCOUNT_KEY=$(
+          az storage account keys list 
+          --resource-group $RESOURCE_GROUP_NAME 
+          --account-name $STORAGE_ACCOUNT_NAME 
+          --query '[0].value' -o tsv)
+          
+          export ARM_ACCESS_KEY=$ACCOUNT_KEY
+
 
     - name: Checkout the repository to the runner
       uses: actions/checkout@v2
