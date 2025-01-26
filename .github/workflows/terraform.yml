@@ -51,7 +51,7 @@ jobs:
 
     - name: Terraform plan
       id: plan
-      run: terraform plan -no-color -input=false
+      run: terraform plan -no-color -input=false -var "storage_account_name=$STORAGE_ACCOUNT_NAME" -out=tfplan -detailed-exitcode
       continue-on-error: true
       env:
         ARM_ACCESS_KEY: ${{ env.ARM_ACCESS_KEY }}
@@ -59,7 +59,7 @@ jobs:
 
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main'
-      run: terraform apply -auto-approve -input=false
+      run: terraform apply -auto-approve -input=false -var "storage_account_name=$STORAGE_ACCOUNT_NAME"
       env:
         ARM_ACCESS_KEY: ${{ env.ARM_ACCESS_KEY }}
         STORAGE_ACCOUNT_NAME: ${{ env.STORAGE_ACCOUNT_NAME }}
