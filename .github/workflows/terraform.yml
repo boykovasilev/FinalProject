@@ -59,7 +59,7 @@ jobs:
 
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main'
-      run: terraform apply "tfplan" -auto-approve -input=false -var "storage_account_name=$STORAGE_ACCOUNT_NAME"
+      run: terraform apply -auto-approve -input=false "tfplan"
       env:
         # ARM_ACCESS_KEY: ${{ env.ARM_ACCESS_KEY }}
         # STORAGE_ACCOUNT_NAME: ${{ env.STORAGE_ACCOUNT_NAME }}
