@@ -41,9 +41,8 @@ FinalProject is a Terraform project that automates the deployment of infrastruct
 
 ## Configuration
 Configure the project by editing the [variables.tf] file. Set the necessary variables such as `resource_group_name`, `storage_account_name`, and others. Make sure to add Tenant ID, subscription ID, Application ID, application secret value, Cloudflare API tokebn and deploy key token. 
-[links]
-Azure app registration (https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure-openid-connect)
-Cloudflare API - (https://developers.cloudflare.com/api/resources/dns/subresources/records/methods/create/)
+[app_registration](https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure-openid-connect)
+[cloudflare_API](https://developers.cloudflare.com/api/resources/dns/subresources/records/methods/create/)
 
 ## Contributing
 Contributions are welcome! Please follow these steps:
