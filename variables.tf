@@ -21,3 +21,9 @@ variable "subscription_id" {
   description = "The subscription ID for the Azure account."
   default = "affa400c-9132-43d6-b147-841e4a5b033f"
 }
+
+variable "storage_account_name" {
+  type        = string
+  description = "The name of the storage account used for the Terraform state file."
+}
+

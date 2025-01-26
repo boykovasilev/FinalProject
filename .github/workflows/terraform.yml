@@ -45,9 +45,6 @@ jobs:
           --account-name $STORAGE_ACCOUNT_NAME 
           --query '[0].value' -o tsv)
           
-          export ARM_ACCESS_KEY=$ACCOUNT_KEY
-
-
     - name: Checkout the repository to the runner
       uses: actions/checkout@v2
     
@@ -59,17 +56,25 @@ jobs:
     
     - name: Terraform init
       id: init
-      run: terraform init 
+      run: terraform init -backend-config="storage_account_name=$STORAGE_ACCOUNT_NAME"
+      env:
+        ARM_ACCESS_KEY: ${{ env.ARM_ACCESS_KEY }}
+        STORAGE_ACCOUNT_NAME: ${{ env.STORAGE_ACCOUNT_NAME }}
 
     - name: Terraform plan
       id: plan
       run: terraform plan -no-color -input=false
       continue-on-error: true
+      env:
+        ARM_ACCESS_KEY: ${{ env.ARM_ACCESS_KEY }}
+        STORAGE_ACCOUNT_NAME: ${{ env.STORAGE_ACCOUNT_NAME }}
 
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main'
       run: terraform apply -auto-approve -input=false
       env:
+        ARM_ACCESS_KEY: ${{ env.ARM_ACCESS_KEY }}
+        STORAGE_ACCOUNT_NAME: ${{ env.STORAGE_ACCOUNT_NAME }}
         ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
         ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
         ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
@@ -78,5 +83,7 @@ jobs:
     - name: Shell Script that runs Ansible Playbook
       run: chmod +x ssh_vm.sh && ./ssh_vm.sh 
       env:
+        ARM_ACCESS_KEY: ${{ env.ARM_ACCESS_KEY }}
+        STORAGE_ACCOUNT_NAME: ${{ env.STORAGE_ACCOUNT_NAME }}
         CF_TOKEN: ${{ secrets.CF_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.DEPLOY_KEY_TOKEN }}
