@@ -34,13 +34,13 @@ FinalProject is a Terraform project that automates the deployment of infrastruct
 2. Make the necessary adjustments and add the needed secrets (see configuration)
 
 ## Usage
-1. Plan the infrastructure changes if oyu wish to make any and update vm.tf.
+1. Plan the infrastructure changes if you wish to make any and update vm.tf.
 2. If additional config changes on the machine are needed edit the ansible file accordingly. 
 3. Open actions -> Terraform Apply for Azure -> Run workflow 
    
 
 ## Configuration
-Configure the project by editing the [variables.tf] file. Set the necessary variables such as `resource_group_name`, `storage_account_name`, and others. Make sure to add Tenant ID, subscription ID, Application ID, application secret value, Cloudflare API token and GitHub deploy key token. 
+Configure the project by editing the [variables.tf](https://github.com/boykovasilev/infra-deployment/blob/main/variables.tf) file. Set the necessary variables such as `resource_group_name`, `storage_account_name`, and others. Make sure to add Tenant ID, subscription ID, Application ID, application secret value, Cloudflare API token and GitHub deploy key token. 
 [App_registration](https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure-openid-connect)
 [Cloudflare_API](https://developers.cloudflare.com/api/resources/dns/subresources/records/methods/create/)
 
